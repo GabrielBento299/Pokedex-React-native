@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, View, ViewBase } from "react-native";
+import { Alert, FlatList, Text, View  } from "react-native";
 import Card from "../../components/Card";
 import { api } from "../../service/api";
-import { HomeContainer, TextTitle } from "./styles";
+import { HomeContainer, TextTitle, TextLoad } from "./styles";
 
 interface IPokemonType {
     type: {
@@ -24,23 +24,32 @@ interface IRequest {
 
 export default function Home() {
     const [pokemons, setPokemons] = useState<IPokemonApi[]>([]);
+    const [isLoader, setIsLoader] = useState(true);
 
     async function getAllPokemons() {
-        const response = await api.get("/pokemon");
-        const { results } = response.data;
-
-        const payloadPokemons = await Promise.all(
-            results.map(async (pokemon: IPokemonApi) => {
-                const { id, types } = await getMoreInfo(pokemon.url)
-                
-                return {
-                    id,
-                    types,
-                    name: pokemon.name
-                }
-            })
-        )
-        setPokemons(payloadPokemons);
+        try {
+            const limitPagesUrl = 30;
+            setIsLoader(true);
+            const response = await api.get(`/pokemon?limit=${limitPagesUrl}&offset=0`);
+            const { results } = response.data;
+            
+            const payloadPokemons = await Promise.all(
+                results.map(async (pokemon: IPokemonApi) => {
+                    const { id, types } = await getMoreInfo(pokemon.url)
+                    
+                    return {
+                        id,
+                        types,
+                        name: pokemon.name
+                    }
+                }),
+                )
+            setPokemons(payloadPokemons);
+        } catch (err) {
+            Alert.alert('ops, algo de errado aconteceu, tente mais tarde');
+        } finally{
+            setIsLoader(false);
+        }
     }
 
     async function getMoreInfo(url: string):Promise<IRequest> {
@@ -58,6 +67,8 @@ export default function Home() {
     return (
         <HomeContainer>
            <TextTitle>Pokédex</TextTitle>
+           {isLoader ? <TextLoad>Carregando...</TextLoad> 
+        : 
            <FlatList 
                 data={pokemons}
                 keyExtractor={pokemon => pokemon.id.toString()}
@@ -65,6 +76,7 @@ export default function Home() {
                 <Card pokemon={pokemon} />      
             )}
            />
+        }
         </HomeContainer>
     )
 }

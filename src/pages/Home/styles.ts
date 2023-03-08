@@ -12,3 +12,12 @@ export const TextTitle = styled.Text`
     margin-top: 32px;
     margin-bottom: 12px;
 `;
+
+export const TextLoad = styled.Text`
+    flex: 1;
+    font-size: 42px;
+    color: red;
+    font-weight: 700;
+    justify-content: center;
+    align-items: center;
+`;
