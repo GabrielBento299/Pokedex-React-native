@@ -18,6 +18,7 @@ from "./styles";
 import DotsImage from '../../assets/img/dots.png';
 import PokeballImage from '../../assets/img/pokeballCard.png';
 import CardAnimation from "../CardAnimation";
+import { View } from "react-native";
 
 type CardProps = {
     pokemon: IPokemonApi;
@@ -25,6 +26,7 @@ type CardProps = {
 
 export default function Card({ pokemon, ...rest } : CardProps) {
     return (
+        <View style={{paddingHorizontal: 20}}>
         <CardContainer type={pokemon.types[0].type.name} {...rest}>
             <LeftSide>
                 <PokemonId>#{pokemon.id}</PokemonId>
@@ -52,5 +54,6 @@ export default function Card({ pokemon, ...rest } : CardProps) {
                 </CardAnimation>
             </RightSide>
         </CardContainer>
+        </View>
     )
 }

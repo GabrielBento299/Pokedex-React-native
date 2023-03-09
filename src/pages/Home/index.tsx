@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Alert, FlatList, Text, View  } from "react-native";
 import Card from "../../components/Card";
 import { api } from "../../service/api";
-import { HomeContainer, TextTitle, TextLoad } from "./styles";
+import { HomeContainer, HeaderImage, TextTitle, TextLoad } from "./styles";
+import PokeballHeaderImg from '../../../assets/adaptive-icon.png';
+import { useNavigation } from "@react-navigation/native";
+import Button from "../../components/Button";
 
 interface IPokemonType {
     type: {
@@ -23,8 +26,17 @@ interface IRequest {
 }
 
 export default function Home() {
+    const { navigate, goBack } = useNavigation();
+
     const [pokemons, setPokemons] = useState<IPokemonApi[]>([]);
     const [isLoader, setIsLoader] = useState(true);
+
+    function HandleNavigation(pokemonId: number) {
+        navigate("About", {
+            pokemonId,
+        });
+    }
+
 
     async function getAllPokemons() {
         try {
@@ -66,14 +78,23 @@ export default function Home() {
 
     return (
         <HomeContainer>
-           <TextTitle>Pokédex</TextTitle>
            {isLoader ? <TextLoad>Carregando...</TextLoad> 
-        : 
+            : 
            <FlatList 
+            ListHeaderComponent={
+                <>
+                    <HeaderImage source={PokeballHeaderImg} /> 
+                    <TextTitle>Pokédex</TextTitle>
+                    {/* <Button title="Voltar" onPress={() => goBack()} /> */}
+                </>
+            }
                 data={pokemons}
                 keyExtractor={pokemon => pokemon.id.toString()}
                 renderItem={({item: pokemon}) => (
-                <Card pokemon={pokemon} />      
+                <Card 
+                    pokemon={pokemon} 
+                    onPress={() => HandleNavigation(pokemon.id)} 
+                />      
             )}
            />
         }
