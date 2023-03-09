@@ -4,8 +4,16 @@ Footer, Title, Subtitle } from "./styles";;
 import Lottie from 'lottie-react-native';
 
 import Button from '../../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Welcome() {
+    const { navigate } = useNavigation();
+
+
+    function handleNavigation() {
+        navigate("Home");
+    }
+
     return (
         <WelcomeContainer>
             <Content>
@@ -24,7 +32,7 @@ export default function Welcome() {
             </Content>
 
             <Footer>
-               <Button title="Começar" />
+               <Button title="Começar" onPress={handleNavigation} />
             </Footer>
         </WelcomeContainer> 
     )

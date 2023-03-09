@@ -42,7 +42,7 @@ export const Footer = styled.View`
         border-top-right-radius: 22px;
         border-top-left-radius: 22px;
         gap: 18px;
-        background-color: ${theme.colors.background};
+        background-color: ${theme.colors.whiteE};
     `}
 `;
 
