@@ -5,7 +5,6 @@ import Lottie from 'lottie-react-native';
 
 import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
-
 export default function Welcome() {
     const { navigate } = useNavigation();
 

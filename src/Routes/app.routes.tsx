@@ -4,7 +4,17 @@ import Welcome from '../pages/Welcome';
 import Home from '../pages/Home';
 import AboutPokemon from '../pages/AboutPokemon';
 
-const Stack = createStackNavigator();
+
+type propsNavigationStack = {
+    Welcome: undefined,
+    Home: undefined,
+    About: {
+        pokemonId: number
+    }
+}
+
+
+const Stack = createStackNavigator<propsNavigationStack>();
 
 export default function AppRoutes() {
     return (

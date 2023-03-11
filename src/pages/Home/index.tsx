@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, Text, View  } from "react-native";
+import { ActivityIndicator, ActivityIndicatorBase, Alert, FlatList, Text, View  } from "react-native";
 import Card from "../../components/Card";
 import { api } from "../../service/api";
 import { HomeContainer, HeaderImage, TextTitle, TextLoad } from "./styles";
@@ -13,11 +13,28 @@ interface IPokemonType {
     };
 }
 
+export type TypeName = 
+    | 'grass'
+    | 'fire'
+    | 'water'
+    | 'poison'
+    | 'normal'
+    | 'bug'
+    | 'flying'
+    | 'eletric'
+    | 'ground';
+
+interface PokemonTypes {
+    type: {
+        name: TypeName;
+    }
+}
+
 export interface IPokemonApi {
     id: number;
     name: string;
     url: string;
-    types: IPokemonType[];
+    types: PokemonTypes[];
 }
 
 interface IRequest {
@@ -26,7 +43,7 @@ interface IRequest {
 }
 
 export default function Home() {
-    const { navigate, goBack } = useNavigation();
+    const { navigate } = useNavigation();
 
     const [pokemons, setPokemons] = useState<IPokemonApi[]>([]);
     const [isLoader, setIsLoader] = useState(true);
@@ -40,7 +57,7 @@ export default function Home() {
 
     async function getAllPokemons() {
         try {
-            const limitPagesUrl = 30;
+            const limitPagesUrl = 60;
             setIsLoader(true);
             const response = await api.get(`/pokemon?limit=${limitPagesUrl}&offset=0`);
             const { results } = response.data;
@@ -85,7 +102,6 @@ export default function Home() {
                 <>
                     <HeaderImage source={PokeballHeaderImg} /> 
                     <TextTitle>Pokédex</TextTitle>
-                    {/* <Button title="Voltar" onPress={() => goBack()} /> */}
                 </>
             }
                 data={pokemons}
@@ -96,6 +112,7 @@ export default function Home() {
                     onPress={() => HandleNavigation(pokemon.id)} 
                 />      
             )}
+            ListFooterComponent={<ActivityIndicator size={'large'} color="red" />}
            />
         }
         </HomeContainer>
