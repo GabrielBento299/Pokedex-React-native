@@ -1,3 +1,7 @@
+Projeto para listagem de todos os pokemons, edetalhes de cada pokemon individualmente. projeto feito ultilizando a api: https://pokeapi.co/
+
+Usei nesse projeto react-native, typescript, styled-components
+
 link do figma: https://www.figma.com/file/THLxZSlOoUYMZrjFg0Kl1M/Pok%C3%A9dex?node-id=0%3A1&t=rEJk3iHcNAhakqva-0
 
 ![Screenshot_1678560039](https://user-images.githubusercontent.com/86307663/224506054-c59b3c8a-193f-4be4-a56f-7187d35cba26.png )
