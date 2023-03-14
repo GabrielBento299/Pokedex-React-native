@@ -27,7 +27,7 @@ import { TextLoad } from "../Home/styles";
 import CardAnimation from "../../components/CardAnimation";
 import TypesPokemon from "../../components/TypesPokemon";
 import TextCard from "../../components/TextCard";
-import useGetAboutPokemon from "../../hooks/useGetAboutPokemon/useGetPokemons/useGetAboutPokemon";
+import useGetAboutPokemon from "../../hooks/useGetAboutPokemon";
 
 export default function AboutPokemon() {
   const { pokemonDetail, isLoading } = useGetAboutPokemon();

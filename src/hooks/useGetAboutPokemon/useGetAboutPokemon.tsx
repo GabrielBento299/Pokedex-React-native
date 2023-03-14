@@ -2,7 +2,7 @@ import { useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
-import { api } from "../../../service/api";
+import { api } from "../../service/api";
 
 interface RouteParams {
   pokemonId: number;
