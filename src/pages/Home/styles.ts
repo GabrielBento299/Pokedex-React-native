@@ -3,7 +3,6 @@ import { Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get("window").width;
 
-
 export const HomeContainer = styled.View`
     flex: 1;
 `;
@@ -22,7 +21,6 @@ export const TextTitle = styled.Text`
 `;
 
 export const TextLoad = styled.Text`
-    flex: 1;
     font-size: 42px;
     color: red;
     font-weight: 700;

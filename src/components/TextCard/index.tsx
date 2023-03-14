@@ -1,6 +1,4 @@
 import { PokemonId, PokemonName } from "./styles";
-
- 
 interface ITextCardPokemon {
     pokemonId: number;
     pokemonName: string;

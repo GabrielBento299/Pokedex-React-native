@@ -1,6 +1,5 @@
 import { PokemonTypeContainer, PokemonTypeText, PokemonType } from "./styles";
 
-
 export type TypeName = 
     | 'grass'
     | 'fire'

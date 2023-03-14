@@ -14,13 +14,10 @@ import {
   AtributeValue,
   ContentBar,
   ProgressBar,
-  Ability
+  Ability,
 } from "./styles";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Alert, ScrollView, Text } from "react-native";
-import { useEffect, useState } from "react";
-import { api } from "../../service/api";
-import { useTheme } from "styled-components/native";
+import { useNavigation } from "@react-navigation/native";
+import { ScrollView, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 import CircleImg from "../../assets/img/circle.png";
@@ -30,86 +27,25 @@ import { TextLoad } from "../Home/styles";
 import CardAnimation from "../../components/CardAnimation";
 import TypesPokemon from "../../components/TypesPokemon";
 import TextCard from "../../components/TextCard";
-
-interface RouteParams {
-  pokemonId: number;
-}
-
-interface Stat {
-  base_stat: number;
-  stat: {
-    name: string;
-  };
-}
-interface Abilitiy {
-  ability: {
-    name: string;
-  };
-}
-export type TypeName =
-  | "grass"
-  | "fire"
-  | "water"
-  | "poison"
-  | "normal"
-  | "bug"
-  | "flying"
-  | "eletric"
-  | "ground";
-
-interface PokemonTypes {
-  type: {
-    name: TypeName;
-  };
-}
-interface IPokemonsProps {
-  id: number;
-  name: string;
-  stats: Stat[];
-  abilities: Abilitiy[];
-  color: string;
-  types: PokemonTypes[];
-}
+import useGetAboutPokemon from "../../hooks/useGetAboutPokemon/useGetPokemons/useGetAboutPokemon";
 
 export default function AboutPokemon() {
+  const { pokemonDetail, isLoading } = useGetAboutPokemon();
+
   const { goBack } = useNavigation();
-  const { colors } = useTheme();
-
-  const route = useRoute();
-  const { pokemonId } = route.params as RouteParams;
-
-  const [pokemonDetail, setPokemonDetail] = useState({} as IPokemonsProps);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  async function getPokemonDetail() {
-    try {
-      const response = await api.get(`/pokemon/${pokemonId}`);
-      const { stats, abilities, id, name, types } = response.data;
-
-
-      const currentType = types[0].type.name as TypeName;
-      const color = colors.backgroundCard[currentType];
-
-      setPokemonDetail({ stats, abilities, id, name, types, color });
-    } catch (err) {
-      Alert.alert("Ops, deu erro!");
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   function handleGoBack() {
     goBack();
   }
 
-  useEffect(() => {
-    getPokemonDetail();
-  }, []);
-
   return (
     <>
       {isLoading ? (
-        <TextLoad>Carregando...</TextLoad>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <TextLoad>Carregando...</TextLoad>
+        </View>
       ) : (
         <ScrollView style={{ flex: 1, backgroundColor: "#FFF" }}>
           <Header type={pokemonDetail.types[0].type.name}>
@@ -135,11 +71,11 @@ export default function AboutPokemon() {
 
             <Content>
               <TextCard
-                sizeId={16}
+                sizeId={15}
                 sizeName={30}
                 pokemonId={pokemonDetail.id}
-                pokemonName={pokemonDetail.name} 
-               />
+                pokemonName={pokemonDetail.name}
+              />
 
               <PokemonTypeContainer>
                 {pokemonDetail.types.map((pokemonType) => (
@@ -151,36 +87,42 @@ export default function AboutPokemon() {
                 ))}
               </PokemonTypeContainer>
             </Content>
-            
+
             <DotsImage source={DotsImg} />
           </Header>
 
           <Container>
-            <ContainerTitle 
-              type={pokemonDetail.types[0].type.name}>Base Stats</ContainerTitle>
+            <ContainerTitle type={pokemonDetail.types[0].type.name}>
+              Base Stats
+            </ContainerTitle>
 
-              {pokemonDetail.stats.map((atribute) => (
-                <StatusBar key={atribute.stat.name}>
-                  <Atributes>{atribute.stat.name}</Atributes>
-                  <AtributeValue>{atribute.base_stat}</AtributeValue>
+            {pokemonDetail.stats.map((atribute) => (
+              <StatusBar key={atribute.stat.name}>
+                <Atributes>{atribute.stat.name}</Atributes>
+                <AtributeValue>{atribute.base_stat}</AtributeValue>
 
-                  <ContentBar>
-                    <CardAnimation>
-                    <ProgressBar 
-                      type={pokemonDetail.types[0].type.name} 
+                <ContentBar>
+                  <CardAnimation>
+                    <ProgressBar
+                      type={pokemonDetail.types[0].type.name}
                       borderWidth={0}
                       progress={100}
                       width={atribute.base_stat}
                       color={pokemonDetail.color}
                     />
-                    </CardAnimation>
-                  </ContentBar>
-                </StatusBar>
-              ))}
-              <ContainerTitle type={pokemonDetail.types[0].type.name} key={pokemonDetail.types[0].type.name}>Habilidades</ContainerTitle>
-                {pokemonDetail.abilities.map((ability) => (
-                  <Ability>{ability.ability.name}</Ability>  
-                ))}
+                  </CardAnimation>
+                </ContentBar>
+              </StatusBar>
+            ))}
+            <ContainerTitle
+              type={pokemonDetail.types[0].type.name}
+              key={pokemonDetail.types[0].type.name}
+            >
+              Habilidades
+            </ContainerTitle>
+            {pokemonDetail.abilities.map((ability) => (
+              <Ability key={ability.ability.name}>{ability.ability.name}</Ability>
+            ))}
           </Container>
         </ScrollView>
       )}

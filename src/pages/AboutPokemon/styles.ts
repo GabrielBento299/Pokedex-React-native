@@ -1,7 +1,18 @@
 import styled, { css } from 'styled-components/native';
-import { TypeName } from '.';
 
 import * as Progress from 'react-native-progress';
+
+export type TypeName =
+  | "grass"
+  | "fire"
+  | "water"
+  | "poison"
+  | "normal"
+  | "bug"
+  | "flying"
+  | "eletric"
+  | "ground";
+
 
 interface TypeProps {
     type: TypeName;
@@ -28,7 +39,6 @@ export const BackButton = styled.TouchableOpacity`
 
 export const ContentImage = styled.View`
     position: relative;
-     
 `;  
 
 export const CircleImage = styled.Image`
@@ -116,7 +126,4 @@ export const Ability = styled.Text`
     color: ${({theme}) => theme.colors.detail};
     padding: 10px 20px;
     text-transform: capitalize;
-`;
-
-export const Tset = styled.Text`
 `;
